@@ -17,6 +17,7 @@ import java.util.Locale;
 public class Material {
 
     private Context mContext;
+    private String Name = "SaveToImage_Iwamoto";
 
     public Material(Context context){
         this.mContext = context;
@@ -32,7 +33,7 @@ public class Material {
 
     //ディレクトリ取得とファイル生成の処理
     public void drectoryM(Bitmap bmp){
-        String savePath = Environment.getExternalStorageDirectory().getPath() + "To";
+        String savePath = Environment.getExternalStorageDirectory().getPath() + "/" + Name;  //親と子のファイルパスを指定してあげる
 
         /*
             指定されたパス名文字列を抽象パス名に変換して、新しいFileインスタンスを作成します。
@@ -43,14 +44,14 @@ public class Material {
         //exists()...ファイルが存在するかの確認
         if (!file.exists()){
             //今回はファイルが存在しなかった場合、ファイル作成
-            file.mkdir();
+            file.mkdirs();
         }
 
         //絶対パスを生成
         String imagePath = savePath + '/' + "IMG_" + getFileName() + ".jpg"; //ファイル名取得
 
         try{
-            FileOutputStream fos = new FileOutputStream(imagePath, true);
+            FileOutputStream fos = new FileOutputStream(imagePath);
             //指定された大きさの圧縮された画像が保存されっる
             bmp.compress(Bitmap.CompressFormat.JPEG,100,fos);
             fos.flush(); //キャッシュ管理
@@ -59,7 +60,7 @@ public class Material {
         } catch (Exception e) {
             e.getMessage();
         }finally {
-            pushGallery(getFileName());
+            pushGallery(imagePath);
         }
     }
 
