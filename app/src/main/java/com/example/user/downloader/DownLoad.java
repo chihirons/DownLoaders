@@ -1,7 +1,10 @@
 package com.example.user.downloader;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class DownLoad extends AppCompatActivity {
 
+    private final static int REQ_GALLERY = 1000;
     Button Clear;
     EditText Texts;
     Button Starts;
@@ -67,9 +75,44 @@ public class DownLoad extends AppCompatActivity {
                     Views.setImageDrawable(null);
                 }
             });
+
+
+            (findViewById(R.id.g_intent)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(intent, REQ_GALLERY);
+                }
+            });
         }
 
-//    @Override
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQ_GALLERY && resultCode == RESULT_OK){
+            Uri s = null;
+            try {
+                s = data.getData();
+
+                //選択したgallery画像からビットマップ画像を取得
+                InputStream in = getContentResolver().openInputStream(data.getData());
+                Bitmap bpm = BitmapFactory.decodeStream(in);
+
+                in.close();
+
+                //画像の表示
+                Views.setImageBitmap(bpm);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    //    @Override
 //    protected void onDestroy() {
 //        task.setListener(null);
 //        super.onDestroy();
