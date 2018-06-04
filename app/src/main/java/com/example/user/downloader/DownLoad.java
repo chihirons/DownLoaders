@@ -84,25 +84,24 @@ public class DownLoad extends AppCompatActivity {
                         no.show();
                     } else {
                         ok.show();
-                        setSaved();
+                        saveImage();
                     }
                     Log.d("BPMの中身", String.valueOf(bpm));
                 }
             };
         }
 
-        //保存用のクラスに値渡し
-        private void setSaved () {
-            Bitmap bitmapImage = ((BitmapDrawable) Views.getDrawable()).getBitmap();
+        public void saveImage(){
+            Bitmap bpm = ((BitmapDrawable)Views.getDrawable()).getBitmap();
             Material material = new Material(this);
-
             try {
-                material.drectoryM(bitmapImage);
-                Toast.makeText(DownLoad.this, "保存できました", Toast.LENGTH_SHORT).show();
-
-            } catch (Error e) {
-                Log.e("setSave", "Error:" + e);
-                Toast.makeText(DownLoad.this, "保存できません", Toast.LENGTH_SHORT).show();
+                String albumName = "TestDownLoad";
+                material.save(bpm, albumName);
+            }catch (Error e){
+                Log.e("DownLoadActivity", "onCreate:" + e);
+                Toast.makeText(DownLoad.this,"保存できません", Toast.LENGTH_SHORT).show();
+            }finally {
+                Toast.makeText(DownLoad.this,"保存できました", Toast.LENGTH_SHORT).show();
             }
         }
 }
