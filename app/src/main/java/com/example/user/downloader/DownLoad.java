@@ -1,6 +1,8 @@
 package com.example.user.downloader;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.InputStream;
+
 public class DownLoad extends AppCompatActivity {
+
+    final static private int GALLERY = 1000;
 
     Button Clear;
     EditText Texts;
@@ -67,6 +73,16 @@ public class DownLoad extends AppCompatActivity {
                     Views.setImageDrawable(null);
                 }
             });
+
+        (findViewById(R.id.g_intent)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent,GALLERY);
+            }
+        });
         }
 
 //    @Override
@@ -75,7 +91,25 @@ public class DownLoad extends AppCompatActivity {
 //        super.onDestroy();
 //    }
 
-        private DownLoadAsyncTask.Listener createListener () {
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == GALLERY && resultCode == RESULT_OK){
+           try {
+               //選択した画像からbitmapを生成
+               InputStream in = getContentResolver().openInputStream(data.getData());
+               Bitmap bpm = BitmapFactory.decodeStream(in);
+               in.close();
+
+               //画像表示
+               Views.setImageBitmap(bpm);
+           }catch (Exception e){
+               Log.e("Error", ":" + e);
+           }
+        }
+    }
+
+    private DownLoadAsyncTask.Listener createListener () {
             return new DownLoadAsyncTask.Listener() {
                 @Override
                 public void onSuccess(Bitmap bpm) {
