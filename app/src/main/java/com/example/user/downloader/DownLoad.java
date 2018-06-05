@@ -26,8 +26,6 @@ public class DownLoad extends AppCompatActivity {
     DownLoadAsyncTask task;
 
     Toast no;
-    Toast ok;
-
     String url;
 
     @Override
@@ -36,7 +34,6 @@ public class DownLoad extends AppCompatActivity {
         setContentView(R.layout.activity_down_load);
 
             no = Toast.makeText(this, "画像取得に失敗", Toast.LENGTH_LONG);
-            ok = Toast.makeText(this, "ダウンロードが完了しました", Toast.LENGTH_LONG);
 
             //紐づけ
             Texts = findViewById(R.id.texts);
@@ -117,7 +114,6 @@ public class DownLoad extends AppCompatActivity {
                     if (bpm == null) {
                         no.show();
                     } else {
-                        ok.show();
                         setSaved();
                     }
                     Log.d("BPMの中身", String.valueOf(bpm));
