@@ -98,11 +98,11 @@ public class DownLoad extends AppCompatActivity {
 
             try {
                 material.drectoryM(bitmapImage);
-                Toast.makeText(DownLoad.this, "保存できました", Toast.LENGTH_SHORT).show();
-
             } catch (Error e) {
                 Log.e("setSave", "Error:" + e);
                 Toast.makeText(DownLoad.this, "保存できません", Toast.LENGTH_SHORT).show();
+            }finally {
+                Toast.makeText(DownLoad.this, "保存できました", Toast.LENGTH_SHORT).show();
             }
         }
 }
