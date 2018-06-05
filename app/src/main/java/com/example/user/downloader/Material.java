@@ -25,7 +25,7 @@ public class Material {
     //ファイルネーム生成
     private String getFileName(){
         Date mDate = new Date();
-        SimpleDateFormat fileNameFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+        SimpleDateFormat fileNameFormat = new SimpleDateFormat("yyyyMMdd.HHmmssSS", Locale.ENGLISH);
         String saveName = fileNameFormat.format(mDate);
         return saveName;
     }
